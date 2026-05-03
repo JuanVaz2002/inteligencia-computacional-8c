@@ -9,4 +9,3 @@ kagglehub
 skl2onnx
 jupyter
 nltk
-spacy
