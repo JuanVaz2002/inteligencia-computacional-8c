@@ -9,3 +9,6 @@ kagglehub
 skl2onnx
 jupyter
 nltk
+sentence_transformers
+openai 
+python-dotenv
