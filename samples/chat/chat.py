@@ -13,15 +13,21 @@ if __name__ == "__main__":
         api_key=KEY,
     )
 
-    print(f"Chatting with {MODEL} model at {URL}\n")
+    print(f"Chatting with {MODEL} model at LM Studio ({URL})\n")
 
     while True:
         message = input("> ")
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[
-                {'role': 'system', 'content': SYSTEM_MESSAGE},
-                {'role': 'user', 'content': message},
-            ]
-        )
-        print(response.choices[0].message.content)
+        
+        # Se utliza un simbolo slash (/) para activar el comando
+        if message[0] == "/":
+            if message.lower() == "/end": # Cerrar este programa
+                break
+        elif message[0] != "/":
+            response = client.chat.completions.create(
+                model=MODEL,
+                messages=[
+                    {'role': 'system', 'content': SYSTEM_MESSAGE},
+                    {'role': 'user', 'content': message},
+                ]
+            )
+            print(response.choices[0].message.content)
