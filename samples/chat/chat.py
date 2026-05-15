@@ -1,5 +1,4 @@
 from openai import OpenAI
-# from dotenv import load_dotenv        # No se requiere dotenv
 
 SYSTEM_MESSAGE = "You are a chatbot. You will have a conversation with a user. Be friendly and concise"
 
@@ -13,7 +12,10 @@ if __name__ == "__main__":
         api_key=KEY,
     )
 
-    print(f"Chatting with {MODEL} model at LM Studio ({URL})\n")
+    # Una lista para quardar las conversaciones anteriores
+    chat_history = [{'role': 'system', 'content': SYSTEM_MESSAGE}]
+    
+    print(f"Chatting with {MODEL} model at LM Studio ({URL}). Type '\end' to quit.\n")
 
     while True:
         message = input("> ")
@@ -23,11 +25,18 @@ if __name__ == "__main__":
             if message.lower() == "/end": # Cerrar este programa
                 break
         elif message[0] != "/":
+            # Guardar el mensaje del usuario
+            chat_history.append({'role': 'user', 'content': message})
+
             response = client.chat.completions.create(
                 model=MODEL,
-                messages=[
-                    {'role': 'system', 'content': SYSTEM_MESSAGE},
-                    {'role': 'user', 'content': message},
-                ]
+                messages=chat_history
             )
-            print(response.choices[0].message.content)
+
+            # Imprimir la respuesta
+            assistant_text = response.choices[0].message.content
+            print(assistant_text)
+
+            # Guardar la respuesta como un mensaje del asistente
+            chat_history.append({"role": "assistant", "content": assistant_text})
+
